@@ -8,9 +8,10 @@ using PlanYourBudgetApi.Data;
 namespace PlanYourBudgetApi.Migrations
 {
     [DbContext(typeof(BudgetContext))]
-    partial class BudgetContextModelSnapshot : ModelSnapshot
+    [Migration("20170623113704_expense_uuid")]
+    partial class expense_uuid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -38,8 +39,6 @@ namespace PlanYourBudgetApi.Migrations
                 {
                     b.Property<int>("ExpenseId")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime?>("CreatedDateTime");
 
                     b.Property<string>("Name");
 
@@ -109,7 +108,7 @@ namespace PlanYourBudgetApi.Migrations
             modelBuilder.Entity("PlanYourBudgetApi.Models.User", b =>
                 {
                     b.HasOne("PlanYourBudgetApi.Models.Family", "Family")
-                        .WithMany()
+                        .WithMany("FamilyMembers")
                         .HasForeignKey("FamilyId");
                 });
         }

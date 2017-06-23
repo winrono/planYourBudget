@@ -8,9 +8,10 @@ using PlanYourBudgetApi.Data;
 namespace PlanYourBudgetApi.Migrations
 {
     [DbContext(typeof(BudgetContext))]
-    partial class BudgetContextModelSnapshot : ModelSnapshot
+    [Migration("20170623112648_user_expense")]
+    partial class user_expense
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -39,17 +40,15 @@ namespace PlanYourBudgetApi.Migrations
                     b.Property<int>("ExpenseId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime?>("CreatedDateTime");
-
                     b.Property<string>("Name");
 
                     b.Property<decimal>("Price");
 
-                    b.Property<string>("UUID");
+                    b.Property<string>("UserUUID");
 
                     b.HasKey("ExpenseId");
 
-                    b.HasIndex("UUID");
+                    b.HasIndex("UserUUID");
 
                     b.ToTable("Expences");
                 });
@@ -96,7 +95,7 @@ namespace PlanYourBudgetApi.Migrations
                 {
                     b.HasOne("PlanYourBudgetApi.Models.User")
                         .WithMany("Expenses")
-                        .HasForeignKey("UUID");
+                        .HasForeignKey("UserUUID");
                 });
 
             modelBuilder.Entity("PlanYourBudgetApi.Models.Family", b =>
@@ -109,7 +108,7 @@ namespace PlanYourBudgetApi.Migrations
             modelBuilder.Entity("PlanYourBudgetApi.Models.User", b =>
                 {
                     b.HasOne("PlanYourBudgetApi.Models.Family", "Family")
-                        .WithMany()
+                        .WithMany("FamilyMembers")
                         .HasForeignKey("FamilyId");
                 });
         }

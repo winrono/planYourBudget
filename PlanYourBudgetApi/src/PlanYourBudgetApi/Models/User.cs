@@ -19,5 +19,7 @@ namespace PlanYourBudgetApi.Models
     
         [Column(TypeName = "Money")]
         public decimal Budget { get; set; }
+
+        public virtual IEnumerable<Expense> Expenses { get; set; }
     }
 }

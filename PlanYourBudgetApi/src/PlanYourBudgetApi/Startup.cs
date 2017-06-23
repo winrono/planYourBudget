@@ -10,6 +10,10 @@ using Microsoft.Extensions.Logging;
 using System.Net.Http;
 using PlanYourBudgetApi.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using System.Buffers;
+using Newtonsoft.Json;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace PlanYourBudgetApi
 {
@@ -40,9 +44,16 @@ namespace PlanYourBudgetApi
             var test = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<BudgetContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IExpenseRepository, ExpenseRepository>();
+            services.AddTransient<IFamilyRepository, FamilyRepository>();
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
             services.AddMvc();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
@@ -64,6 +75,13 @@ namespace PlanYourBudgetApi
                 .MapRoute(
                     name: "DefaultApiWithAction",
                     template: "Api/{controller}/{action}/{id?}");
+            });
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
         }
     }
