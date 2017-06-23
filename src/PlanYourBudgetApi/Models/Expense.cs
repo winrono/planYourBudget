@@ -12,9 +12,10 @@ namespace PlanYourBudgetApi.Models
         [Key]
         public int ExpenseId { get; set; }
         public string Name { get; set; }
-        public double Price { get; set; }
+        public decimal Price { get; set; }
 
-        [ForeignKey("User")]
+        [ForeignKey("UUID")]
         public string UUID { get; set; }
+        public DateTime? CreatedDateTime { get; set; }
     }
 }

@@ -8,9 +8,10 @@ using PlanYourBudgetApi.Data;
 namespace PlanYourBudgetApi.Migrations
 {
     [DbContext(typeof(BudgetContext))]
-    partial class BudgetContextModelSnapshot : ModelSnapshot
+    [Migration("20170623151027_created_datetime_for_expense")]
+    partial class created_datetime_for_expense
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")

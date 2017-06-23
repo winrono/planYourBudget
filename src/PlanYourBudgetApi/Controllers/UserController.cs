@@ -9,6 +9,7 @@ using PlanYourBudgetApi.Models.Internal;
 
 namespace PlanYourBudgetApi.Controllers
 {
+    [Route("api/[controller]/[action]")]
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
