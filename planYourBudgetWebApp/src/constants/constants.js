@@ -1,0 +1,1 @@
+export const WEBAPI_URL = "http://planyourbudgetapi.azurewebsites.net/api/"

@@ -1,0 +1,3 @@
+export const SIGN_IN = "SIGN_IN"
+export const CHANGE_USERNAME = "CHANGE_USERNAME"
+export const CHANGE_PASSWORD = "CHANGE_PASSWORD"

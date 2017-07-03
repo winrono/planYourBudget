@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Buffers;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
+using AutoMapper;
 
 namespace PlanYourBudgetApi
 {
@@ -48,11 +49,21 @@ namespace PlanYourBudgetApi
             services.AddTransient<IFamilyRepository, FamilyRepository>();
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
+
+            services.AddAutoMapper();
+
+            services.AddCors(o => o.AddPolicy("StandardPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
             services.AddMvc();
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+                c.SwaggerDoc("v2", new Info { Title = "My API", Version = "v2" });
             });
         }
 
@@ -65,6 +76,8 @@ namespace PlanYourBudgetApi
             app.UseApplicationInsightsRequestTelemetry();
 
             app.UseApplicationInsightsExceptionTelemetry();
+
+            app.UseCors("StandardPolicy");
 
             app.UseMvc(routes =>
             {
@@ -81,7 +94,7 @@ namespace PlanYourBudgetApi
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v2/swagger.json", "My API V1");
             });
         }
     }
