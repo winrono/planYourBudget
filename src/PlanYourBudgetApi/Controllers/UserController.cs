@@ -39,7 +39,7 @@ namespace PlanYourBudgetApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register([FromBody] User user)
+        public IActionResult Register([FromBody] RegisteringUser user)
         {
             var isRegistered = _userRepository.Register(user);
             if (isRegistered)

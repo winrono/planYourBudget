@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using PlanYourBudgetApi.Data;
 using PlanYourBudgetApi.Models;
 using PlanYourBudgetApi.Models.Internal;
+using AutoMapper;
 
 namespace PlanYourBudgetApi.Data
 {
@@ -18,16 +19,18 @@ namespace PlanYourBudgetApi.Data
 
         public User GetUser(LoginUser user)
         {
-            var dbUser = _db.Users.SingleOrDefault(u => u.UUID == user.UUID && u.Password == user.Password);
+            var dbUser = _db.Users.SingleOrDefault(u => u.UUID.ToLower() == user.UUID.ToLower() && u.Password == user.Password);
             return dbUser;
         }
         /// <summary>
         /// Returns true if user successfully registered and false if user already exists in DB
         /// </summary>
         /// <param name="user">App user</param>
-        public bool Register(User user)
+        public bool Register(RegisteringUser registeringUser)
         {
-            var dbUser = _db.Users.Find(user.UUID);
+            var dbUser = _db.Users.Find(registeringUser.UUID);
+
+            var user = Mapper.Map<RegisteringUser, User>(registeringUser);
 
             if (dbUser == null)
             {

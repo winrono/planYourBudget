@@ -26,7 +26,14 @@ namespace PlanYourBudgetApi.Data
         public IEnumerable<Expense> GetUserExpenses(string UUID)
         {
             var user = Users.SingleOrDefault(x => x.UUID == UUID);
-            return user.Expenses;
+            if (user != null)
+            {
+                return user.Expenses;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public void AddExpense(Expense expense)

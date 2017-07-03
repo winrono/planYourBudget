@@ -11,7 +11,7 @@ namespace PlanYourBudgetApi.Data
     {
         User GetUser(LoginUser user);
         IEnumerable<FoundUser> FindUsers(string searchTerm);
-        bool Register(User user);
+        bool Register(RegisteringUser user);
         void SetBudget(UserBudget userBudget);
     }
 }
