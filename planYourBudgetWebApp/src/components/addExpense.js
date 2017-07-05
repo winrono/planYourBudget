@@ -1,12 +1,15 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
+import TextField from 'material-ui/TextField';
 
 export default class AddExpense extends Component {
-    constructor(props,context){
-        super(props,context)
+    constructor(props, context) {
+        super(props, context)
     }
     render() {
         return (
-            <div>Hey buddy!</div>
+            <TextField
+                floatingLabelText="Login"
+            />
         )
     }
 }
