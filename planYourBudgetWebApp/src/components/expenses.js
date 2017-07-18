@@ -20,26 +20,12 @@ class Expenses extends Component {
 
         this.state = { dialogOpen: false }
 
-        const { getUserExpenses } = this.props.actionCreators
+        const { getUserExpenses, changeAddExpenseDialogState } = this.props.actionCreators
         getUserExpenses("testuser")
     }
-    AddExpense = () => {
-        console.log('added!');
-    }
-    handleDialogOpen = () => {
-        this.setState({ dialogOpen: true })
-    }
-    handleDialogClose = () => {
-        this.setState({ dialogOpen: false });
-    }
     render() {
-        const actions = [
-            <RaisedButton fullWidth
-                label="Save"
-                primary
-                onClick={() => this.AddExpense()} />
-        ]
         const { expenses } = this.props.expenses;
+        const {changeAddExpenseDialogState } = this.props.actionCreators
         const rows = expenses.map((expense, id) => <TableRow key={id}>
             <TableRowColumn>{expense.name}</TableRowColumn>
             <TableRowColumn>{expense.price}</TableRowColumn>
@@ -59,15 +45,8 @@ class Expenses extends Component {
                         {rows}
                     </TableBody>
                 </Table>
-                <RaisedButton label="Add expense" primary onClick={() => this.handleDialogOpen()} />
-                <Dialog
-                    title="Expense creation form"
-                    actions={actions}
-                    open={this.state.dialogOpen}
-                    onRequestClose={this.handleDialogClose}
-                >
-                    Some content of dialog
-                </Dialog>
+                <RaisedButton label="Add expense" primary onClick={() => changeAddExpenseDialogState(true)} />
+                <AddExpense isOpen={this.state.dialogOpen} />
             </div>
         )
     }

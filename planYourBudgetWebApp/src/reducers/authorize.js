@@ -3,6 +3,14 @@ import {SIGN_IN, CHANGE_USERNAME, CHANGE_PASSWORD} from '../constants/authorizat
 export default function authorize(state = null, action) {
 
     switch (action.type) {
+        case SIGN_IN:
+        return {
+            ...state,
+            user: {
+                ...state.user,
+                uuid: action.payload
+            }
+        }
         case CHANGE_USERNAME:
             return {
                 ...state,

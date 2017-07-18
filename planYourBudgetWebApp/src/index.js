@@ -11,7 +11,13 @@ import thunkMiddleware from 'redux-thunk'
 
 const initialState = {
     expenses: {
-        expenses: []
+        expenses: [],
+        addExpenseDialogOpen: false
+    },
+    authorize: {
+        user: {
+            uuid: ""
+        }
     }
 };
 
