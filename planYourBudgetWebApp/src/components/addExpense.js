@@ -14,11 +14,16 @@ class AddExpense extends Component {
             price: 0,
             uuid: props.uuid
         }
+
+        this.initialState = this.state;
+    }
+    async onAddExpense(){
+        await this.props.actionCreators.addExpense(this.state)
+        this.setState(this.initialState)
     }
     render() {
         const { dialogOpen } = this.props;
         const { changeAddExpenseDialogState, addExpense } = this.props.actionCreators;
-
         const actions = [
             <RaisedButton
                 label="Close"
@@ -29,7 +34,7 @@ class AddExpense extends Component {
                 label="Save"
                 primary
                 style={styles.dialogButton}
-                onClick={() => addExpense(this.state)} />
+                onClick={() => this.onAddExpense()} />
         ]
         return (
             <Dialog

@@ -39,7 +39,8 @@ export default class BudgetApp extends Component {
                 <div
                     style={{
                     flex: '1',
-                    padding: '30px'
+                    padding: '30px',
+                    overflow: 'auto'
                 }}>
                     <Route path={`${match.url}/expenses`} component={Expenses}
                     />

@@ -1,5 +1,5 @@
 import { SIGN_IN, CHANGE_PASSWORD, CHANGE_USERNAME } from '../constants/authorizationConstants'
-import { GET_USER_EXPENSES, HANDLE_EXPENSES, TOGGLE_ADD_EXPENSE_DIALOG } from '../constants/expensesConstants'
+import { GET_USER_EXPENSES, HANDLE_EXPENSES, TOGGLE_ADD_EXPENSE_DIALOG, ADD_CREATED_EXPENSE, REMOVE_SELECTED_EXPENSES } from '../constants/expensesConstants'
 import { WEBAPI_URL } from '../constants/constants'
 
 export function SignIn(uuid) {
@@ -43,32 +43,71 @@ export function getUserExpenses(uuid) {
 }
 
 export function addExpense(expense) {
-    return async function (dispatch, getState) {
+    return async function (dispatch) {
 
         var endpoint = WEBAPI_URL + "Expense/AddExpense"
 
-        try {
-            fetch(endpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(expense)
-            }).then((json) => {
-                if (json.ok){
-                    dispatch(getUserExpenses(getState().authorize.user.uuid))
-                }
-            })
-        }
-        catch (e) {
-            console.log('wtf!');
-        }
+        return new Promise((resolve, reject) => {
+            try {
+
+                fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(expense)
+                }).then((response) => response.json()).then(
+                    (json) => {
+                        expense.expenseId = json;
+                        dispatch(addCreatedExpense(expense))
+                        dispatch(changeAddExpenseDialogState(false))
+                        resolve()
+                    }
+                    )
+            }
+            catch (e) {
+                reject()
+            }
+        })
 
     }
 }
 
 export function changeAddExpenseDialogState(payload) {
     return { type: TOGGLE_ADD_EXPENSE_DIALOG, payload: payload }
+}
+
+export function addCreatedExpense(payload) {
+    return { type: ADD_CREATED_EXPENSE, payload: payload }
+}
+
+export function removeSelectedExpenses(payload) {
+    return async function (dispatch) {
+
+        var endpoint = WEBAPI_URL + "Expense/DeleteExpenses"
+
+        try {
+            fetch(endpoint, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            }).then((json) => {
+                if (json.ok) {
+                    dispatch(removeExpensesUI(payload))
+                }
+            })
+        }
+        catch (e) {
+
+        }
+
+    }
+}
+
+export function removeExpensesUI(payload) {
+    return { type: REMOVE_SELECTED_EXPENSES, payload: payload }
 }
 
 
