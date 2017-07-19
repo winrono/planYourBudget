@@ -6,16 +6,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA2cfWL8cW+EOjyk9tlEt2gQAAAAACAAAAAAAQZgAAAAEAACAAAAC374HOPBQ8uEHmLaxw+luDuqxXA+JX9QVw0MgHaIJzAgAAAAAOgAAAAAIAACAAAABvF8YDpaXMUbrd0ucedtCyGVpwjdFkl3cx2f577gW8/4AAAADg+Rq2FB8vUwloTgy1yY9EhSGmj+CFbUG3hMYNpfSaqxcprCOFg6Zn9oPJ/sObBJtyIyPUc0lsz+99cYYtLRNPU85Fv6mfEwbYO6s0Ecv8Z3PHimLjES04oDubS17i3S3tpzyyljCVyNOLiH5wbkRqO5imvOia0XVFc3o3RvEc4kAAAACwAJuP8ZXylHMLVXyVxRTdAiGv9IK+a1LemHFsvRIVZwGtvy3PCL4RP1TVqfOhXTrdpvX9tEr+uzpleR1pthI8</EncryptedPassword>
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAOZ8QZU1Sf06Qqn2YRktKZAAAAAACAAAAAAADZgAAwAAAABAAAADG3Oi2dQRSPFt3tPfhxq5YAAAAAASAAACgAAAAEAAAAOrZ4xwnN/euY5pkn3B1HzwYAAAAgppACtWqQG7PzaerGVRNwmsM+Zsv52ciFAAAAKdmMGj+h55sRbgBs+lFXeQS7AiV</EncryptedPassword>
   </PropertyGroup>
   <ItemGroup>
     <DestinationConnectionStrings Include="DefaultConnection">
       <Value>Data Source=tcp:planyourbudget.database.windows.net,1433;Initial Catalog=PlanYourBudgetDB;User Id=raman_nasovich@planyourbudget.database.windows.net;Password=sharpCode1@;</Value>
     </DestinationConnectionStrings>
-  </ItemGroup>
-  <ItemGroup>
-    <EfMigrations Include="PlanYourBudgetApi.Data.BudgetContext">
-      <Value>Data Source=tcp:planyourbudget.database.windows.net,1433;Initial Catalog=PlanYourBudgetDB;User Id=raman_nasovich@planyourbudget.database.windows.net;Password=sharpCode1@;</Value>
-    </EfMigrations>
   </ItemGroup>
 </Project>

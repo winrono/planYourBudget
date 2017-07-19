@@ -28,14 +28,28 @@ namespace PlanYourBudgetApi.Controllers
         [HttpPost]
         public IActionResult AddExpense([FromBody] Expense expense)
         {
-            _expenseRepository.AddExpense(expense);
-            return Ok();
+            var expenseId = _expenseRepository.AddExpense(expense);
+            return Ok(expenseId);
         }
 
         [HttpDelete]
         public IActionResult DeleteExpense(int id)
         {
             var isDeleted = _expenseRepository.DeleteExpense(id);
+            if (isDeleted)
+            {
+                return Ok();
+            }
+            else
+            {
+                return StatusCode(304);
+            }
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteExpenses([FromBody] int[] ids)
+        {
+            var isDeleted = _expenseRepository.DeleteExpenses(ids);
             if (isDeleted)
             {
                 return Ok();

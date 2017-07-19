@@ -36,10 +36,12 @@ namespace PlanYourBudgetApi.Data
             }
         }
 
-        public void AddExpense(Expense expense)
+        public int AddExpense(Expense expense)
         {
             _db.Expences.Add(expense);
             _db.SaveChanges();
+
+            return expense.ExpenseId;
         }
 
         public bool DeleteExpense(int expenseId)
@@ -55,6 +57,14 @@ namespace PlanYourBudgetApi.Data
             {
                 return false;
             }
+        }
+
+        public bool DeleteExpenses(int[] expenseIds)
+        {
+            var expenses = _db.Expences.Where(x => expenseIds.Contains(x.ExpenseId));
+            _db.Expences.RemoveRange(expenses);
+            _db.SaveChanges();
+            return true;
         }
 
         public void UpdateExpense(Expense expense)
