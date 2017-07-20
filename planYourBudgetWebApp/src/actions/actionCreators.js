@@ -1,5 +1,5 @@
 import { SIGN_IN, CHANGE_PASSWORD, CHANGE_USERNAME } from '../constants/authorizationConstants'
-import { GET_USER_EXPENSES, HANDLE_EXPENSES, TOGGLE_ADD_EXPENSE_DIALOG, ADD_CREATED_EXPENSE, REMOVE_SELECTED_EXPENSES } from '../constants/expensesConstants'
+import { GET_USER_EXPENSES, HANDLE_EXPENSES, TOGGLE_EXPENSE_EDITOR, ADD_CREATED_EXPENSE, REMOVE_SELECTED_EXPENSES, EDIT_EXPENSE } from '../constants/expensesConstants'
 import { WEBAPI_URL } from '../constants/constants'
 
 export function SignIn(uuid) {
@@ -60,7 +60,7 @@ export function addExpense(expense) {
                     (json) => {
                         expense.expenseId = json;
                         dispatch(addCreatedExpense(expense))
-                        dispatch(changeAddExpenseDialogState(false))
+                        dispatch(changeExpenseEditorState(false))
                         resolve()
                     }
                     )
@@ -73,8 +73,8 @@ export function addExpense(expense) {
     }
 }
 
-export function changeAddExpenseDialogState(payload) {
-    return { type: TOGGLE_ADD_EXPENSE_DIALOG, payload: payload }
+export function changeExpenseEditorState(payload) {
+    return { type: TOGGLE_EXPENSE_EDITOR, payload: payload }
 }
 
 export function addCreatedExpense(payload) {
@@ -109,5 +109,4 @@ export function removeSelectedExpenses(payload) {
 export function removeExpensesUI(payload) {
     return { type: REMOVE_SELECTED_EXPENSES, payload: payload }
 }
-
 

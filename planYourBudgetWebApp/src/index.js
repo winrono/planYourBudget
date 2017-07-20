@@ -12,7 +12,8 @@ import thunkMiddleware from 'redux-thunk'
 const initialState = {
     expenses: {
         expenses: [],
-        addExpenseDialogOpen: false
+        addExpenseDialogOpen: false,
+        expenseEditorOpen: false
     },
     authorize: {
         user: {

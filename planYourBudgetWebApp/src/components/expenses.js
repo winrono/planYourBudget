@@ -10,17 +10,30 @@ import {
     TableRow,
     TableRowColumn
 } from 'material-ui/Table';
-import AddExpense from './addExpense'
+import ExpenseEditor from './expenseEditor'
 import RaisedButton from 'material-ui/RaisedButton'
 import Dialog from 'material-ui/Dialog'
+import TextField from 'material-ui/TextField';
+import IconButton from 'material-ui/IconButton';
+
+const iconStyles = {
+    marginRight: 24,
+};
+
+const editingExpense = {
+    name: undefined,
+    price: undefined
+}
 
 class Expenses extends Component {
     constructor(props, context) {
         super(props, context)
 
-        this.state = { dialogOpen: false, selectedExpenses: [] }
+        this.state = {
+            dialogOpen: false, selectedExpenses: [], editingExpense: editingExpense,
+        }
 
-        const { getUserExpenses, changeAddExpenseDialogState } = this.props.actionCreators
+        const { getUserExpenses } = this.props.actionCreators
         getUserExpenses("testuser")
         //getUserExpenses(this.props.uuid)
     }
@@ -35,39 +48,55 @@ class Expenses extends Component {
         }
         this.setState({ selectedExpenses: expenseIds })
     }
+    openExpenseEditor(e, expense) {
+        e.preventDefault()
+        e.stopPropagation()
+        this.props.actionCreators.changeExpenseEditorState(true)
+        this.setState({ editingExpense: expense })
+    }
     render() {
         const { expenses } = this.props;
-        const { changeAddExpenseDialogState, removeSelectedExpenses } = this.props.actionCreators
-        const rows = expenses.map((expense) => <TableRow key={expense.expenseId} selected={this.state.selectedExpenses.indexOf(expense.expenseId) > -1}>
+        const { changeExpenseEditorState, removeSelectedExpenses, addCreatedExpense } = this.props.actionCreators
+        const rows = expenses.map((expense, id) => <TableRow key={expense.expenseId} selected={this.state.selectedExpenses.indexOf(expense.expenseId) > -1}>
             <TableRowColumn>{expense.expenseId}</TableRowColumn>
             <TableRowColumn>{expense.name}</TableRowColumn>
             <TableRowColumn>{expense.price}</TableRowColumn>
             <TableRowColumn>{expense.createdDateTime}</TableRowColumn>
+            <TableRowColumn>
+                <IconButton onClick={(evt) => this.openExpenseEditor(evt, expense)} iconClassName="material-icons">edit</IconButton>
+            </TableRowColumn>
         </TableRow>);
         return (
             <div>
-                <Table onRowSelection={(selectedIds) => this.onRowSelection(selectedIds)} multiSelectable={true}>
-                    <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+                <Table onRowSelection={(selectedIds) => this.onRowSelection(selectedIds)} multiSelectable={true} showCheckboxes={true}>
+                    <TableHeader displaySelectAll={false} adjustForCheckbox={true}>
                         <TableRow>
+                            <TableHeaderColumn>Id</TableHeaderColumn>
                             <TableHeaderColumn>Name</TableHeaderColumn>
                             <TableHeaderColumn>Price</TableHeaderColumn>
                             <TableHeaderColumn>Creation time</TableHeaderColumn>
+                            <TableHeaderColumn>Edit</TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
                     <TableBody deselectOnClickaway={false}>
                         {rows}
                     </TableBody>
                 </Table>
-                <RaisedButton label="Add expense" primary onClick={() => changeAddExpenseDialogState(true)} />
-                <RaisedButton label="Remove selected" backgroundColor="red" onClick={() => removeSelectedExpenses(this.state.selectedExpenses)} />
-                <AddExpense isOpen={this.state.dialogOpen} />
+                <div>
+                    <RaisedButton label="Add expense" primary onClick={() => {
+                        changeExpenseEditorState(true)
+                        this.state.editingExpense = editingExpense;
+                    }} />
+                    <RaisedButton label="Remove selected" backgroundColor="red" onClick={() => removeSelectedExpenses(this.state.selectedExpenses)} />
+                </div>
+                <ExpenseEditor expense={this.state.editingExpense} />
             </div>
         )
     }
 }
 
 function mapStateToProps(state) {
-    return { expenses: state.expenses.expenses, uuid: state.authorize.user.uuid }
+    return { expenses: state.expenses.expenses, dialogOpen: state.expenses.expenseEditorOpen, uuid: state.authorize.user.uuid }
 }
 
 function mapDispatchToProps(dispatch) {

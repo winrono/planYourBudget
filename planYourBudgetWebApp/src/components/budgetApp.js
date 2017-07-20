@@ -4,7 +4,6 @@ import MenuItem from 'material-ui/MenuItem'
 import Paper from 'material-ui/Paper'
 import Divider from 'material-ui/Divider';
 import {BrowserRouter as Router, Link, Route, Switch, Layout} from 'react-router-dom'
-import AddExpense from './addExpense'
 import Expenses from './expenses'
 
 export default class BudgetApp extends Component {
@@ -28,11 +27,6 @@ export default class BudgetApp extends Component {
                             `${match.url}/expenses`
                         } />}/>
                         <Divider/>
-                        <MenuItem
-                            primaryText="Add expense"
-                            containerElement={< Link to = {
-                            `${match.url}/addExpense`
-                        } />}/>
                         <Divider/>
                     </Menu>
                 </Paper>
@@ -44,7 +38,6 @@ export default class BudgetApp extends Component {
                 }}>
                     <Route path={`${match.url}/expenses`} component={Expenses}
                     />
-                    <Route path={`${match.url}/addExpense`} component={AddExpense}/>
                 </div>
             </div>
         )

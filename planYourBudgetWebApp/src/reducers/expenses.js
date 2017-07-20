@@ -1,4 +1,4 @@
-import { GET_USER_EXPENSES, HANDLE_EXPENSES, TOGGLE_ADD_EXPENSE_DIALOG, ADD_CREATED_EXPENSE, REMOVE_SELECTED_EXPENSES } from '../constants/expensesConstants'
+import { GET_USER_EXPENSES, HANDLE_EXPENSES, TOGGLE_EXPENSE_EDITOR, ADD_CREATED_EXPENSE, REMOVE_SELECTED_EXPENSES, EDIT_EXPENSE } from '../constants/expensesConstants'
 
 const initialState = {
     expenses: []
@@ -13,10 +13,10 @@ export default function expenses(state = initialState, action) {
                 expenses: action.payload
             }
             return res;
-        case TOGGLE_ADD_EXPENSE_DIALOG:
+        case TOGGLE_EXPENSE_EDITOR:
             return {
                 ...state,
-                addExpenseDialogOpen: action.payload
+                expenseEditorOpen: action.payload
             }
         case ADD_CREATED_EXPENSE:
             return {
@@ -27,14 +27,12 @@ export default function expenses(state = initialState, action) {
                 ]
             }
         case REMOVE_SELECTED_EXPENSES:
-        return {
-            ...state,
-            expenses: state.expenses.filter((expense)=> {
-                return !action.payload.includes(expense.expenseId)
-            })
-        }
-            console.log('heeey!')
-            return state;
+            return {
+                ...state,
+                expenses: state.expenses.filter((expense) => {
+                    return !action.payload.includes(expense.expenseId)
+                })
+            }
         default:
             return state;
     }
