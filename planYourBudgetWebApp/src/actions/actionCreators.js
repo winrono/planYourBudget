@@ -1,5 +1,5 @@
 import { SIGN_IN, CHANGE_PASSWORD, CHANGE_USERNAME } from '../constants/authorizationConstants'
-import { GET_USER_EXPENSES, HANDLE_EXPENSES, TOGGLE_EXPENSE_EDITOR, ADD_CREATED_EXPENSE, REMOVE_SELECTED_EXPENSES, EDIT_EXPENSE } from '../constants/expensesConstants'
+import { GET_USER_EXPENSES, HANDLE_EXPENSES, TOGGLE_EXPENSE_EDITOR, ADD_CREATED_EXPENSE, REMOVE_SELECTED_EXPENSES, EDIT_EXPENSE, UPDATE_EXPENSE_UI } from '../constants/expensesConstants'
 import { WEBAPI_URL } from '../constants/constants'
 
 export function SignIn(uuid) {
@@ -43,13 +43,16 @@ export function getUserExpenses(uuid) {
 }
 
 export function addExpense(expense) {
-    return async function (dispatch) {
+    return async function (dispatch, getState) {
 
         var endpoint = WEBAPI_URL + "Expense/AddExpense"
 
+        if (!expense.uuid) {
+            expense.uuid = getState().authorize.user.uuid
+        }
+
         return new Promise((resolve, reject) => {
             try {
-
                 fetch(endpoint, {
                     method: 'POST',
                     headers: {
@@ -73,12 +76,44 @@ export function addExpense(expense) {
     }
 }
 
+export function updateExpense(expense) {
+    return async function (dispatch) {
+
+        var endpoint = WEBAPI_URL + "Expense/UpdateExpense"
+
+        return new Promise((resolve, reject) => {
+            try {
+                fetch(endpoint, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(expense)
+                }).then(
+                    (json) => {
+                        dispatch(changeExpenseEditorState(false))
+                        dispatch(updateExpenseUI(expense))
+                        resolve()
+                    }
+                    )
+            }
+            catch (e) {
+                reject()
+            }
+        })
+    }
+}
+
 export function changeExpenseEditorState(payload) {
     return { type: TOGGLE_EXPENSE_EDITOR, payload: payload }
 }
 
 export function addCreatedExpense(payload) {
     return { type: ADD_CREATED_EXPENSE, payload: payload }
+}
+
+export function updateExpenseUI(payload) {
+    return { type: UPDATE_EXPENSE_UI, payload: payload }
 }
 
 export function removeSelectedExpenses(payload) {

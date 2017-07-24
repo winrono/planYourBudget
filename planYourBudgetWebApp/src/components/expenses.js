@@ -17,20 +17,15 @@ import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 
 const iconStyles = {
-    marginRight: 24,
+    marginRight: 24
 };
-
-const editingExpense = {
-    name: undefined,
-    price: undefined
-}
 
 class Expenses extends Component {
     constructor(props, context) {
         super(props, context)
 
         this.state = {
-            dialogOpen: false, selectedExpenses: [], editingExpense: editingExpense,
+            dialogOpen: false, selectedExpenses: [],
         }
 
         const { getUserExpenses } = this.props.actionCreators
@@ -83,10 +78,7 @@ class Expenses extends Component {
                     </TableBody>
                 </Table>
                 <div>
-                    <RaisedButton label="Add expense" primary onClick={() => {
-                        changeExpenseEditorState(true)
-                        this.state.editingExpense = editingExpense;
-                    }} />
+                    <RaisedButton label="Add expense" primary onClick={(evt) => { this.openExpenseEditor(evt, null) }} />
                     <RaisedButton label="Remove selected" backgroundColor="red" onClick={() => removeSelectedExpenses(this.state.selectedExpenses)} />
                 </div>
                 <ExpenseEditor expense={this.state.editingExpense} />

@@ -5,21 +5,53 @@ import { connect } from 'react-redux'
 import * as actionCreators from '../actions/actionCreators'
 import { bindActionCreators } from 'redux'
 import TextField from 'material-ui/TextField';
+import DatePicker from 'material-ui/DatePicker';
+import * as date from '../utils/date'
 
 class ExpenseEditor extends Component {
     constructor(props, context) {
         super(props, context)
+        this.state = {
+            expense: {
+                name: "",
+                price: "",
+                createdDateTime: null
+            },
+            new: false
+        }
+
+        this.initialState = this.state
     }
-    async onAddExpense() {
-        try {
-            await this.props.actionCreators.addExpense(this.state)
+    async onSave() {
+
+        var preparedExpense = {
+            ...this.state.expense,
+            createdDateTime: date.formatDate(this.state.expense.createdDateTime)
         }
-        catch (e) {
+
+        if (this.state.new) {
+            this.props.actionCreators.addExpense(preparedExpense)
         }
-        this.setState(this.initialState)
+        else {
+            this.props.actionCreators.updateExpense(preparedExpense)
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+
+        if (nextProps.expense) {
+            this.setState({
+                expense: {
+                    ...nextProps.expense,
+                    createdDateTime: new Date(nextProps.expense.createdDateTime)
+                }, new: false
+            })
+        }
+        else {
+            this.setState({ expense: this.initialState.expense, new: true })
+        }
     }
     render() {
-        const { dialogOpen, expense } = this.props;
+        const { dialogOpen } = this.props;
         const { changeExpenseEditorState, addExpense } = this.props.actionCreators;
         const actions = [
             <RaisedButton
@@ -31,7 +63,7 @@ class ExpenseEditor extends Component {
                 label="Save"
                 primary
                 style={styles.dialogButton}
-                onClick={() => this.onAddExpense()} />
+                onClick={() => this.onSave()} />
         ]
         return (
             <Dialog
@@ -40,14 +72,24 @@ class ExpenseEditor extends Component {
                 open={dialogOpen}
                 modal={true}
                 onRequestClose={this.closeDialog}>
-                <TextField
-                    floatingLabelText="Name"
-                    value={expense.name}
-                    onChange={(evt) => this.setState({ name: evt.target.value })} />
-                <TextField
-                    floatingLabelText="Price"
-                    value={expense.price}
-                    onChange={(evt) => this.setState({ price: evt.target.value })} />
+                <div>
+                    <TextField
+                        floatingLabelText="Name"
+                        value={this.state.expense.name}
+                        onChange={(evt) => this.setState({ expense: { ...this.state.expense, name: evt.target.value } })} />
+                </div>
+                <div>
+                    <TextField
+                        floatingLabelText="Price"
+                        value={this.state.expense.price}
+                        onChange={(evt) => this.setState({ expense: { ...this.state.expense, price: evt.target.value } })} />
+                </div>
+                <div>
+                    <DatePicker
+                        floatingLabelText="Date"
+                        value={this.state.expense.createdDateTime}
+                        onChange={(evt, date) => this.setState({ expense: { ...this.state.expense, createdDateTime: date } })} />
+                </div>
             </Dialog>
         )
     }
@@ -60,7 +102,7 @@ const styles = {
 }
 
 function mapStateToProps(state) {
-    return { dialogOpen: state.expenses.expenseEditorOpen, uuid: state.authorize.user.uuid }
+    return { dialogOpen: state.expenses.expenseEditorOpen }
 }
 
 function mapDispatchToProps(dispatch) {
