@@ -15,6 +15,7 @@ using System.Buffers;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
 using AutoMapper;
+using Microsoft.IdentityModel.Tokens;
 
 namespace PlanYourBudgetApi
 {
@@ -78,6 +79,22 @@ namespace PlanYourBudgetApi
             app.UseApplicationInsightsExceptionTelemetry();
 
             app.UseCors("StandardPolicy");
+
+            app.UseJwtBearerAuthentication(new JwtBearerOptions
+            {
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = AuthOptions.ISSUER,
+                    ValidateAudience = true,
+                    ValidAudience = AuthOptions.AUDIENCE,
+                    ValidateLifetime = true,
+                    IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                    ValidateIssuerSigningKey = true
+                }
+            });
 
             app.UseMvc(routes =>
             {
