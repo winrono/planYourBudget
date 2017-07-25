@@ -4,9 +4,9 @@ import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import {WEBAPI_URL} from '../constants/constants'
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 import * as actionCreators from '../actions/actionCreators'
-import { bindActionCreators } from 'redux'
+import {bindActionCreators} from 'redux'
 
 class SignIn extends Component {
 
@@ -31,7 +31,10 @@ class SignIn extends Component {
             body: JSON.stringify({"uuid": this.state.uuid, "password": this.state.password})
         });
         if (result.ok) {
-            this.props.actionCreators.SignIn(this.state.uuid);
+            this
+                .props
+                .actionCreators
+                .SignIn(this.state.uuid);
 
             this
                 .context
@@ -45,8 +48,14 @@ class SignIn extends Component {
 
     render() {
         return (
-            <Paper style={{
+            <Paper
+                style={{
                 padding: '20px'
+            }}
+                onKeyPress={(e) => {
+                if (e.charCode === 13) {
+                    this.onAuthorize()
+                }
             }}>
                 <div>
                     <TextField
@@ -71,7 +80,7 @@ class SignIn extends Component {
 }
 
 function mapStateToProps(state) {
-    return { authorize: state.authorize }
+    return {authorize: state.authorize}
 }
 
 function mapDispatchToProps(dispatch) {
