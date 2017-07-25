@@ -6,7 +6,7 @@ export function formatDate(date) {
     else {
         convertedDate = date
     }
-    if (convertedDate == "Invalid Date") {
+    if (convertedDate === "Invalid Date") {
         return date
     }
     return convertedDate.getFullYear() + "-" + (convertedDate.getMonth() + 1) + "-" + convertedDate.getDate()

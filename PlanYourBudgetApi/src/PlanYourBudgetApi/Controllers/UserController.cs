@@ -6,6 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using PlanYourBudgetApi.Models;
 using PlanYourBudgetApi.Data;
 using PlanYourBudgetApi.Models.Internal;
+using Microsoft.AspNetCore.Http;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PlanYourBudgetApi.Controllers
 {
@@ -18,24 +24,11 @@ namespace PlanYourBudgetApi.Controllers
             _userRepository = userRepository;
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult FindUsers(string searchTerm)
         {
             return new JsonResult(_userRepository.FindUsers(searchTerm));
-        }
-
-        [HttpPost]
-        public IActionResult Login([FromBody] LoginUser user)
-        {
-            var result = _userRepository.GetUser(user);
-            if (result != null)
-            {
-                return Ok(result);
-            }
-            else
-            {
-                return BadRequest();
-            }
         }
 
         [HttpPost]
@@ -57,6 +50,55 @@ namespace PlanYourBudgetApi.Controllers
         {
             _userRepository.SetBudget(userBudget);
             return Ok();
+        }
+
+        [HttpPost]
+        public async Task Login([FromBody] LoginUser user)
+        {
+            var identity = GetIdentity(user);
+            if (identity == null)
+            {
+                Response.StatusCode = 400;
+                await Response.WriteAsync("Invalid username or password.");
+                return;
+            }
+
+            var now = DateTime.UtcNow;
+            var jwt = new JwtSecurityToken(
+                    issuer: AuthOptions.ISSUER,
+                    audience: AuthOptions.AUDIENCE,
+                    notBefore: now,
+                    claims: identity.Claims,
+                    expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
+                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+            var response = new
+            {
+                token = encodedJwt,
+                username = identity.Name
+            };
+
+            Response.ContentType = "application/json";
+            await Response.WriteAsync(JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented }));
+        }
+
+        private ClaimsIdentity GetIdentity(LoginUser user)
+        {
+            User person = _userRepository.GetUser(user);
+            if (person != null)
+            {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, person.UUID)
+                };
+                ClaimsIdentity claimsIdentity =
+                new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
+                    ClaimsIdentity.DefaultRoleClaimType);
+                return claimsIdentity;
+            }
+
+            return null;
         }
     }
 }
