@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import * as actionCreators from '../actions/actionCreators'
 import { bindActionCreators } from 'redux'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
+import fetchApi from '../http/fetchApi'
 
 class SignIn extends Component {
 
@@ -24,26 +25,29 @@ class SignIn extends Component {
     }
 
     async onAuthorize() {
-        let result = await fetch(WEBAPI_URL + "user/login", {
+        let result = await fetchApi(WEBAPI_URL + "user/login", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ "uuid": this.state.uuid, "password": this.state.password })
-        });
+        }, false);
         if (result.ok) {
+            let json = await result.json()
+            sessionStorage.setItem('budgetAppToken', json.token)
             this
                 .props
                 .actionCreators
-                .SignIn(this.state.uuid);
+                .SignIn(json.username);
 
             this
                 .context
                 .router
                 .history
                 .push('/app/expenses');
-        } else {
-            alert('please recheck your login and password');
+        }
+        else {
+            alert('incorrect credentials!')
         }
     }
 

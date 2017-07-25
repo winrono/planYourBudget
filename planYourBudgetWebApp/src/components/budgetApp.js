@@ -17,13 +17,13 @@ class BudgetApp extends Component {
 
     constructor(props, context, match) {
         super(props, context, match)
-
-        if (this.props.user.uuid == "") {
+        if (!sessionStorage.getItem("budgetAppToken")) {
             this
                 .context
                 .router
                 .history
                 .push('/');
+            return false;
         }
     }
     render() {

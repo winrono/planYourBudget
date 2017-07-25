@@ -31,8 +31,12 @@ class App extends Component {
                 <Authorization />
               </div>
             </Route>
-            <Route path="/app" component={BudgetApp}>
-            </Route>
+            <Route path="/app"
+              render={
+                (props) => {
+                  return (<BudgetApp {...props} />)
+                }
+              } />
           </Switch>
         </Router>
       </MuiThemeProvider>

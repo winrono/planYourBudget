@@ -31,6 +31,7 @@ namespace PlanYourBudgetApi.Controllers
             return new JsonResult(_userRepository.FindUsers(searchTerm));
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Register([FromBody] RegisteringUser user)
         {
@@ -45,6 +46,7 @@ namespace PlanYourBudgetApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult SetBudget([FromBody]UserBudget userBudget)
         {

@@ -1,6 +1,7 @@
 import { SIGN_IN, CHANGE_PASSWORD, CHANGE_USERNAME } from '../constants/authorizationConstants'
 import { GET_USER_EXPENSES, HANDLE_EXPENSES, TOGGLE_EXPENSE_EDITOR, ADD_CREATED_EXPENSE, REMOVE_SELECTED_EXPENSES, EDIT_EXPENSE, UPDATE_EXPENSE_UI } from '../constants/expensesConstants'
 import { WEBAPI_URL } from '../constants/constants'
+import fetchApi from '../http/fetchApi'
 
 export function SignIn(uuid) {
     return { type: SIGN_IN, payload: uuid }
@@ -29,7 +30,7 @@ export function getUserExpenses(uuid) {
 
         var endpoint = WEBAPI_URL + "Expense/GetUserExpenses?uuid=" + uuid
 
-        let result = await fetch(endpoint, {
+        let result = await fetchApi(endpoint, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -53,7 +54,7 @@ export function addExpense(expense) {
 
         return new Promise((resolve, reject) => {
             try {
-                fetch(endpoint, {
+                fetchApi(endpoint, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -83,7 +84,7 @@ export function updateExpense(expense) {
 
         return new Promise((resolve, reject) => {
             try {
-                fetch(endpoint, {
+                fetchApi(endpoint, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -122,7 +123,7 @@ export function removeSelectedExpenses(payload) {
         var endpoint = WEBAPI_URL + "Expense/DeleteExpenses"
 
         try {
-            fetch(endpoint, {
+            fetchApi(endpoint, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'

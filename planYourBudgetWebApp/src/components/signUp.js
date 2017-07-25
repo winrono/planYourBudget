@@ -3,6 +3,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import {WEBAPI_URL} from '../constants/constants'
+import fetchApi from '../http/fetchApi'
 
 export default class SignUp extends Component {
 
@@ -21,7 +22,7 @@ export default class SignUp extends Component {
     }
 
     async onRegister() {
-        let result = await fetch(WEBAPI_URL + "user/Register", {
+        let result = await fetchApi(WEBAPI_URL + "user/Register", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PlanYourBudgetApi.Data;
 using PlanYourBudgetApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,12 +20,14 @@ namespace PlanYourBudgetApi.Controllers
             _expenseRepository = expenseRepository;
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult GetUserExpenses(string UUID)
         {
             return new JsonResult(_expenseRepository.GetUserExpenses(UUID));
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult AddExpense([FromBody] Expense expense)
         {
@@ -32,6 +35,7 @@ namespace PlanYourBudgetApi.Controllers
             return Ok(expenseId);
         }
 
+        [Authorize]
         [HttpDelete]
         public IActionResult DeleteExpense(int id)
         {
@@ -46,6 +50,7 @@ namespace PlanYourBudgetApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete]
         public IActionResult DeleteExpenses([FromBody] int[] ids)
         {
@@ -60,6 +65,7 @@ namespace PlanYourBudgetApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut]
         public IActionResult UpdateExpense([FromBody] Expense expense)
         {
