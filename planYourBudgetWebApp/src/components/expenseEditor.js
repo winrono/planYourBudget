@@ -23,7 +23,6 @@ class ExpenseEditor extends Component {
         this.initialState = this.state
     }
     async onSave() {
-
         var preparedExpense = {
             ...this.state.expense,
             createdDateTime: date.formatDate(this.state.expense.createdDateTime)

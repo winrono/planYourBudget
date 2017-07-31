@@ -2,7 +2,6 @@ import React, {Component, PropTypes} from 'react'
 import RaisedButton from 'material-ui/RaisedButton'
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
-import {WEBAPI_URL} from '../constants/constants'
 import fetchApi from '../http/fetchApi'
 
 export default class SignUp extends Component {
@@ -22,7 +21,7 @@ export default class SignUp extends Component {
     }
 
     async onRegister() {
-        let result = await fetchApi(WEBAPI_URL + "user/Register", {
+        let result = await fetchApi("authorization/Register", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -34,7 +33,7 @@ export default class SignUp extends Component {
                 .context
                 .router
                 .history
-                .push('/app');
+                .push('/app/expenses');
         } else {
             alert('please recheck your login and password');
         }
@@ -55,6 +54,8 @@ export default class SignUp extends Component {
                     <TextField
                         floatingLabelText="Password"
                         value={this.state.password}
+                        type="password"
+                        autoComplete="new-password"
                         onChange={(evt) => this.setState({password: evt.target.value})}/>
                 </div>
                 <div>

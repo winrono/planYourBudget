@@ -1,6 +1,5 @@
 import { SIGN_IN, CHANGE_PASSWORD, CHANGE_USERNAME } from '../constants/authorizationConstants'
 import { GET_USER_EXPENSES, HANDLE_EXPENSES, TOGGLE_EXPENSE_EDITOR, ADD_CREATED_EXPENSE, REMOVE_SELECTED_EXPENSES, EDIT_EXPENSE, UPDATE_EXPENSE_UI } from '../constants/expensesConstants'
-import { WEBAPI_URL } from '../constants/constants'
 import fetchApi from '../http/fetchApi'
 
 export function SignIn(uuid) {
@@ -28,7 +27,7 @@ export function getUserExpenses(uuid) {
 
         dispatch(fetchExpenses(uuid))
 
-        var endpoint = WEBAPI_URL + "Expense/GetUserExpenses?uuid=" + uuid
+        var endpoint = "Expense/GetUserExpenses?uuid=" + uuid
 
         let result = await fetchApi(endpoint, {
             method: 'GET',
@@ -46,7 +45,7 @@ export function getUserExpenses(uuid) {
 export function addExpense(expense) {
     return async function (dispatch, getState) {
 
-        var endpoint = WEBAPI_URL + "Expense/AddExpense"
+        var endpoint = "Expense/AddExpense"
 
         if (!expense.uuid) {
             expense.uuid = getState().authorize.user.uuid
@@ -80,7 +79,7 @@ export function addExpense(expense) {
 export function updateExpense(expense) {
     return async function (dispatch) {
 
-        var endpoint = WEBAPI_URL + "Expense/UpdateExpense"
+        var endpoint = "Expense/UpdateExpense"
 
         return new Promise((resolve, reject) => {
             try {
@@ -120,7 +119,7 @@ export function updateExpenseUI(payload) {
 export function removeSelectedExpenses(payload) {
     return async function (dispatch) {
 
-        var endpoint = WEBAPI_URL + "Expense/DeleteExpenses"
+        var endpoint = "Expense/DeleteExpenses"
 
         try {
             fetchApi(endpoint, {

@@ -29,8 +29,7 @@ class Expenses extends Component {
         }
 
         const { getUserExpenses } = this.props.actionCreators
-        getUserExpenses("testuser")
-        //getUserExpenses(this.props.uuid)
+        getUserExpenses(this.props.uuid)
     }
     onRowSelection(selectedIds) {
 

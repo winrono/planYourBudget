@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
+import * as constants from './constants/constants'
 import {Provider} from 'react-redux'
 import {createStore, applyMiddleware, combineReducers} from 'redux'
 import authorize from './reducers/authorize'
@@ -16,9 +17,7 @@ const initialState = {
         expenseEditorOpen: false
     },
     authorize: {
-        user: {
-            uuid: ""
-        }
+        user: JSON.parse(sessionStorage.getItem(constants.userSessionKey))
     }
 };
 

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace PlanYourBudgetApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]/[action]")]
     public class ExpenseController : Controller
     {
@@ -20,22 +21,19 @@ namespace PlanYourBudgetApi.Controllers
             _expenseRepository = expenseRepository;
         }
 
-        [Authorize]
         [HttpGet]
         public IActionResult GetUserExpenses(string UUID)
         {
             return new JsonResult(_expenseRepository.GetUserExpenses(UUID));
         }
-
-        [Authorize]
+        
         [HttpPost]
         public IActionResult AddExpense([FromBody] Expense expense)
         {
             var expenseId = _expenseRepository.AddExpense(expense);
             return Ok(expenseId);
         }
-
-        [Authorize]
+        
         [HttpDelete]
         public IActionResult DeleteExpense(int id)
         {
@@ -49,8 +47,7 @@ namespace PlanYourBudgetApi.Controllers
                 return StatusCode(304);
             }
         }
-
-        [Authorize]
+        
         [HttpDelete]
         public IActionResult DeleteExpenses([FromBody] int[] ids)
         {
@@ -65,7 +62,6 @@ namespace PlanYourBudgetApi.Controllers
             }
         }
 
-        [Authorize]
         [HttpPut]
         public IActionResult UpdateExpense([FromBody] Expense expense)
         {

@@ -1,4 +1,6 @@
-export default async function fetchApi(url, requestInfo, isTokenRequired = true) {
+import * as constants from "../constants/constants"
+
+export default async function fetchApi(path, requestInfo, isTokenRequired = true) {
 
     return new Promise((resolve, reject) => {
         try {
@@ -10,17 +12,16 @@ export default async function fetchApi(url, requestInfo, isTokenRequired = true)
             requestInfo.headers['Content-Type'] = 'application/json'
 
             if (isTokenRequired) {
-                requestInfo.headers['Authorization'] = 'Bearer ' + sessionStorage.getItem('budgetAppToken')
+                requestInfo.headers['Authorization'] = 'Bearer ' + sessionStorage.getItem(constants.tokenSessionKey)
             }
 
-            fetch(url, requestInfo).then((response) => {
+            fetch(constants.WEBAPI_URL + path, requestInfo).then((response) => {
                 if (response.status === 401) {
                     window.location.pathname = "/"
                 }
                 resolve(response)
             })
-        }
-        catch (e) {
+        } catch (e) {
             reject()
         }
     })

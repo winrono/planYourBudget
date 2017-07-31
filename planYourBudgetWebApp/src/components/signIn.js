@@ -3,7 +3,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import { WEBAPI_URL } from '../constants/constants'
+import * as constants from '../constants/constants'
 import { connect } from 'react-redux'
 import * as actionCreators from '../actions/actionCreators'
 import { bindActionCreators } from 'redux'
@@ -25,7 +25,7 @@ class SignIn extends Component {
     }
 
     async onAuthorize() {
-        let result = await fetchApi(WEBAPI_URL + "user/login", {
+        let result = await fetchApi("authorization/login", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -34,11 +34,12 @@ class SignIn extends Component {
         }, false);
         if (result.ok) {
             let json = await result.json()
-            sessionStorage.setItem('budgetAppToken', json.token)
+            sessionStorage.setItem(constants.tokenSessionKey, json.token)
+            sessionStorage.setItem(constants.userSessionKey, JSON.stringify(json.user))
             this
                 .props
                 .actionCreators
-                .SignIn(json.username);
+                .SignIn(json.user);
 
             this
                 .context

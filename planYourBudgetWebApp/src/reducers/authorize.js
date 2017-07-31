@@ -6,10 +6,7 @@ export default function authorize(state = null, action) {
         case SIGN_IN:
         return {
             ...state,
-            user: {
-                ...state.user,
-                uuid: action.payload
-            }
+            user: action.payload
         }
         case CHANGE_USERNAME:
             return {
