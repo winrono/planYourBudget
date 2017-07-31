@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace PlanYourBudgetApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]/[action]")]
     public class FamilyController : Controller
     {
@@ -20,7 +21,6 @@ namespace PlanYourBudgetApi.Controllers
             _familyRepository = familyRepository;
         }
 
-        [Authorize]
         [HttpPost]
         public IActionResult AddFamilyMember([FromBody] FamilyUserId familyUserId)
         {
@@ -29,7 +29,6 @@ namespace PlanYourBudgetApi.Controllers
             return Ok();
         }
 
-        [Authorize]
         [HttpGet]
         public IActionResult GetFamilyExpenses(int id)
         {
@@ -37,14 +36,12 @@ namespace PlanYourBudgetApi.Controllers
             return new JsonResult(result);
         }
 
-        [Authorize]
         [HttpGet]
         public IActionResult GetFamilyByUUID(string UUID)
         {
             return new JsonResult(_familyRepository.GetFamilyByUUID(UUID));
         }
 
-        [Authorize]
         [HttpPost]
         public IActionResult RemoveFamilyMember([FromBody] FamilyUserId familyUserId)
         {
@@ -53,7 +50,6 @@ namespace PlanYourBudgetApi.Controllers
             return Ok();
         }
 
-        [Authorize]
         [HttpPut]
         public IActionResult SetBudget([FromBody] FamilyMoneyModel familyMoneyModel)
         {
@@ -61,7 +57,5 @@ namespace PlanYourBudgetApi.Controllers
 
             return Ok();
         }
-
-
     }
 }
