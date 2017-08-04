@@ -6,6 +6,7 @@ using PlanYourBudgetApi.Data;
 using PlanYourBudgetApi.Models;
 using PlanYourBudgetApi.Models.Internal;
 using AutoMapper;
+using PlanYourBudgetApi.Models.Enums;
 
 namespace PlanYourBudgetApi.Data
 {
@@ -26,24 +27,19 @@ namespace PlanYourBudgetApi.Data
         /// Returns true if user successfully registered and false if user already exists in DB
         /// </summary>
         /// <param name="user">App user</param>
-        public bool Register(RegisteringUser registeringUser)
+        public RegistrationResult Register(RegisteringUser registeringUser, ref User user)
         {
             var dbUser = _db.Users.Find(registeringUser.UUID);
 
-            var user = Mapper.Map<RegisteringUser, User>(registeringUser);
-
             if (dbUser == null)
             {
-                _db.Users.Add(user);
-
+                _db.Users.Add(dbUser);
                 _db.SaveChanges();
+                user = dbUser;
+                return RegistrationResult.Registered;
+            }
 
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return RegistrationResult.UserExists;
         }
 
         public IEnumerable<FoundUser> FindUsers(string searchTerm)

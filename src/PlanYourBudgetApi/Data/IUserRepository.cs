@@ -1,4 +1,5 @@
 ﻿using PlanYourBudgetApi.Models;
+using PlanYourBudgetApi.Models.Enums;
 using PlanYourBudgetApi.Models.Internal;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace PlanYourBudgetApi.Data
     {
         User GetUser(LoginUser user);
         IEnumerable<FoundUser> FindUsers(string searchTerm);
-        bool Register(RegisteringUser user);
+        RegistrationResult Register(RegisteringUser registeringUser, ref User user);
         void SetBudget(UserBudget userBudget);
     }
 }
