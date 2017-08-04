@@ -4,7 +4,9 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using PlanYourBudgetApi.Data;
 using PlanYourBudgetApi.Models;
+using PlanYourBudgetApi.Models.Enums;
 using PlanYourBudgetApi.Models.Internal;
+using PlanYourBudgetApi.Models.Responses;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -24,55 +26,45 @@ namespace PlanYourBudgetApi.Controllers
         }
 
         [HttpPost]
-        public async Task Login([FromBody] LoginUser user)
+        public JsonResult Login([FromBody] LoginUser user)
         {
-            var person = _userRepository.GetUser(user);
-            if (person == null)
+            var dbUser = _userRepository.GetUser(user);
+            JsonResult response = null;
+
+            if (dbUser == null)
             {
                 Response.StatusCode = 400;
-                await Response.WriteAsync("Invalid username or password.");
-                return;
-            }
-            var identity = GetIdentity(person);
-
-            var now = DateTime.UtcNow;
-            var jwt = new JwtSecurityToken(
-                    issuer: AuthOptions.ISSUER,
-                    audience: AuthOptions.AUDIENCE,
-                    notBefore: now,
-                    expires: now.AddMonths(1),
-                    claims: identity.Claims,
-                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-
-            var response = new
-            {
-                token = encodedJwt,
-                user = new
-                {
-                    uuid = identity.Name,
-                    budget = person.Budget,
-                    fullName = person.FullName,
-                    family = person.Family
-                }
-            };
-
-            Response.ContentType = "application/json";
-            await Response.WriteAsync(JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented }));
-        }
-
-        [HttpPost]
-        public IActionResult Register([FromBody] RegisteringUser user)
-        {
-            var isRegistered = _userRepository.Register(user);
-            if (isRegistered)
-            {
-                return Ok();
+                response = new JsonResult("Invalid username or password.");
             }
             else
             {
-                return StatusCode(304);
+                response = new JsonResult(GetUserInfo(dbUser));
             }
+
+            return new JsonResult(response);
+        }
+
+        [HttpPost]
+        public JsonResult Register([FromBody] RegisteringUser registeringUser)
+        {
+            User registeredUser = null;
+            var result = _userRepository.Register(registeringUser, ref registeredUser);
+
+            JsonResult response = null;
+
+            switch (result)
+            {
+                case RegistrationResult.Registered:
+                    var userInfo = GetUserInfo(registeredUser);
+                    response = new JsonResult(userInfo);
+                    break;
+                case RegistrationResult.UserExists:
+                    Response.StatusCode = 500;
+                    response = new JsonResult("User already exists");
+                    break;
+            }
+
+            return response;
         }
 
         private ClaimsIdentity GetIdentity(User user)
@@ -85,6 +77,35 @@ namespace PlanYourBudgetApi.Controllers
             new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
                 ClaimsIdentity.DefaultRoleClaimType);
             return claimsIdentity;
+        }
+
+        private UserInfo GetUserInfo(User user)
+        {
+            var identity = GetIdentity(user);
+
+            var now = DateTime.UtcNow;
+            var jwt = new JwtSecurityToken(
+                    issuer: AuthOptions.ISSUER,
+                    audience: AuthOptions.AUDIENCE,
+                    notBefore: now,
+                    expires: now.AddMonths(1),
+                    claims: identity.Claims,
+                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+            var userInfo = new UserInfo
+            {
+                Token = encodedJwt,
+                User = new RegisteredUser
+                {
+                    UUID = identity.Name,
+                    Budget = user.Budget,
+                    FullName = user.FullName,
+                    Family = user.Family
+                }
+            };
+
+            return userInfo;
         }
     }
 }
