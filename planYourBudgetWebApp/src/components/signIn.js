@@ -34,12 +34,12 @@ class SignIn extends Component {
         }, false);
         if (result.ok) {
             let json = await result.json()
-            sessionStorage.setItem(constants.tokenSessionKey, json.Token)
-            sessionStorage.setItem(constants.userSessionKey, JSON.stringify(json.User))
+            sessionStorage.setItem(constants.tokenSessionKey, json.token)
+            sessionStorage.setItem(constants.userSessionKey, JSON.stringify(json.user))
             this
                 .props
                 .actionCreators
-                .SignIn(json.User);
+                .SignIn(json.user);
 
             this
                 .context

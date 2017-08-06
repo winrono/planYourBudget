@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import '../App.css'
+import '../main.css'
 import SignIn from './signIn'
 import SignUp from './signUp'
 import {Tabs, Tab} from 'material-ui/Tabs';
@@ -7,7 +7,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 export default class Authorization extends Component {
     render() {
         return (
-            <div className="authorization-component">
+            <div className="flex-centered">
                 <Tabs>
                     <Tab label="Sign In">
                         <SignIn/>

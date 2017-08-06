@@ -15,7 +15,8 @@ class ExpenseEditor extends Component {
             expense: {
                 name: "",
                 price: "",
-                createdDateTime: null
+                createdDateTime: null,
+                uuid: this.props.uuid
             },
             new: false
         }
@@ -101,7 +102,7 @@ const styles = {
 }
 
 function mapStateToProps(state) {
-    return { dialogOpen: state.expenses.expenseEditorOpen }
+    return { dialogOpen: state.expenses.expenseEditorOpen, uuid: state.authorize.user.uuid }
 }
 
 function mapDispatchToProps(dispatch) {

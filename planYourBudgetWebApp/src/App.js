@@ -1,19 +1,14 @@
 import React, {Component} from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './main.css';
 import Authorization from './components/authorization'
 import {BrowserRouter as Router, Link, Route, Switch, Redirect} from 'react-router-dom'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme'
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 import AppBar from 'material-ui/AppBar';
 import {connect} from 'react-redux'
 import * as actionCreators from './actions/actionCreators'
 import {bindActionCreators} from 'redux'
 import BudgetApp from './components/budgetApp'
-
-injectTapEventPlugin();
+import CircularProgress from 'material-ui/CircularProgress';
 
 class App extends Component {
   constructor(props, context) {
@@ -22,7 +17,6 @@ class App extends Component {
   render() {
     const {user} = this.props
     return (
-      <MuiThemeProvider>
         <Router>
           <Switch>
             <Route exact path="/">
@@ -41,7 +35,6 @@ class App extends Component {
             }}/>
           </Switch>
         </Router>
-      </MuiThemeProvider>
     );
   }
 }

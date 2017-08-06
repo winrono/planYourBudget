@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import AppRenderer from './components/appRenderer';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 import * as constants from './constants/constants'
@@ -8,9 +8,13 @@ import {Provider} from 'react-redux'
 import {createStore, applyMiddleware, combineReducers} from 'redux'
 import authorize from './reducers/authorize'
 import expenses from './reducers/expenses'
+import renderer from './reducers/renderer'
 import thunkMiddleware from 'redux-thunk'
 
 const initialState = {
+    renderer: {
+       isLoading: true 
+    },
     expenses: {
         expenses: [],
         addExpenseDialogOpen: false,
@@ -21,10 +25,10 @@ const initialState = {
     }
 };
 
-const combinedReducers = combineReducers({authorize, expenses})
+const combinedReducers = combineReducers({authorize, expenses, renderer})
 
 const store = createStore(combinedReducers, initialState, applyMiddleware(thunkMiddleware))
 
 ReactDOM.render(
-    <Provider store={store}><App/></Provider>, document.getElementById('root'));
+    <Provider store={store}><AppRenderer/></Provider>, document.getElementById('root'));
 registerServiceWorker();

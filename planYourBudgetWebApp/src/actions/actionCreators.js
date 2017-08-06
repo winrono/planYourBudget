@@ -1,4 +1,5 @@
 import { SIGN_IN, CHANGE_PASSWORD, CHANGE_USERNAME } from '../constants/authorizationConstants'
+import { CHANGE_LOADING_STATE} from '../constants/renderingConstants'
 import { GET_USER_EXPENSES, HANDLE_EXPENSES, TOGGLE_EXPENSE_EDITOR, ADD_CREATED_EXPENSE, REMOVE_SELECTED_EXPENSES, EDIT_EXPENSE, UPDATE_EXPENSE_UI } from '../constants/expensesConstants'
 import fetchApi from '../http/fetchApi'
 
@@ -46,10 +47,6 @@ export function addExpense(expense) {
     return async function (dispatch, getState) {
 
         var endpoint = "Expense/AddExpense"
-
-        if (!expense.uuid) {
-            expense.uuid = getState().authorize.user.uuid
-        }
 
         return new Promise((resolve, reject) => {
             try {
@@ -143,5 +140,9 @@ export function removeSelectedExpenses(payload) {
 
 export function removeExpensesUI(payload) {
     return { type: REMOVE_SELECTED_EXPENSES, payload: payload }
+}
+
+export function ChangeLoadingState(payload){
+    return {type: CHANGE_LOADING_STATE, payload: payload }
 }
 

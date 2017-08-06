@@ -6,7 +6,6 @@ using PlanYourBudgetApi.Data;
 using PlanYourBudgetApi.Models;
 using PlanYourBudgetApi.Models.Enums;
 using PlanYourBudgetApi.Models.Internal;
-using PlanYourBudgetApi.Models.Responses;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -41,7 +40,7 @@ namespace PlanYourBudgetApi.Controllers
                 response = new JsonResult(GetUserInfo(dbUser));
             }
 
-            return new JsonResult(response);
+            return response;
         }
 
         [HttpPost]
@@ -79,7 +78,7 @@ namespace PlanYourBudgetApi.Controllers
             return claimsIdentity;
         }
 
-        private UserInfo GetUserInfo(User user)
+        private object GetUserInfo(User user)
         {
             var identity = GetIdentity(user);
 
@@ -93,15 +92,15 @@ namespace PlanYourBudgetApi.Controllers
                     signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-            var userInfo = new UserInfo
+            var userInfo = new
             {
-                Token = encodedJwt,
-                User = new RegisteredUser
+                token = encodedJwt,
+                user = new
                 {
-                    UUID = identity.Name,
-                    Budget = user.Budget,
-                    FullName = user.FullName,
-                    Family = user.Family
+                    uuid = identity.Name,
+                    budget = user.Budget,
+                    fullName = user.FullName,
+                    family = user.Family
                 }
             };
 

@@ -1,5 +1,4 @@
-.authorization-component {
-    display: flex;
+.flex-centered {
     flex: 1;
     flex-direction: column;
     justify-content: center;
