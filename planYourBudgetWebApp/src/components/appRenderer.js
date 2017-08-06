@@ -15,12 +15,10 @@ class AppRenderer extends Component {
         let content;
 
         if (this.props.isLoading) {
-            content = <div className="flex-centered display-flex"><CircularProgress size={80} thickness={5}/></div>
+            content = <div className="stretch flex-centered"><CircularProgress size={80} thickness={5}/></div>
         } else {
             content = <App/>
         }
-
-        content = <App/>
 
         return (
             <MuiThemeProvider>

@@ -1,26 +1,34 @@
-import { SIGN_IN, CHANGE_PASSWORD, CHANGE_USERNAME } from '../constants/authorizationConstants'
-import { CHANGE_LOADING_STATE} from '../constants/renderingConstants'
-import { GET_USER_EXPENSES, HANDLE_EXPENSES, TOGGLE_EXPENSE_EDITOR, ADD_CREATED_EXPENSE, REMOVE_SELECTED_EXPENSES, EDIT_EXPENSE, UPDATE_EXPENSE_UI } from '../constants/expensesConstants'
+import {SIGN_IN, CHANGE_PASSWORD, CHANGE_USERNAME} from '../constants/authorizationConstants'
+import {CHANGE_LOADING_STATE} from '../constants/renderingConstants'
+import {
+    GET_USER_EXPENSES,
+    HANDLE_EXPENSES,
+    TOGGLE_EXPENSE_EDITOR,
+    ADD_CREATED_EXPENSE,
+    REMOVE_SELECTED_EXPENSES,
+    EDIT_EXPENSE,
+    UPDATE_EXPENSE_UI
+} from '../constants/expensesConstants'
 import fetchApi from '../http/fetchApi'
 
 export function SignIn(uuid) {
-    return { type: SIGN_IN, payload: uuid }
+        return {type: SIGN_IN, payload: uuid}
 }
 
 export function changeUsername(value) {
-    return { type: CHANGE_USERNAME, payload: value }
+    return {type: CHANGE_USERNAME, payload: value}
 }
 
 export function changePassword(value) {
-    return { type: CHANGE_PASSWORD, payload: value }
+    return {type: CHANGE_PASSWORD, payload: value}
 }
 
 export function fetchExpenses(uuid) {
-    return { type: GET_USER_EXPENSES, payload: uuid }
+    return {type: GET_USER_EXPENSES, payload: uuid}
 }
 
 export function handleExpenses(data) {
-    return { type: HANDLE_EXPENSES, payload: data }
+    return {type: HANDLE_EXPENSES, payload: data}
 }
 
 export function getUserExpenses(uuid) {
@@ -56,16 +64,13 @@ export function addExpense(expense) {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(expense)
-                }).then((response) => response.json()).then(
-                    (json) => {
-                        expense.expenseId = json;
-                        dispatch(addCreatedExpense(expense))
-                        dispatch(changeExpenseEditorState(false))
-                        resolve()
-                    }
-                    )
-            }
-            catch (e) {
+                }).then((response) => response.json()).then((json) => {
+                    expense.expenseId = json;
+                    dispatch(addCreatedExpense(expense))
+                    dispatch(changeExpenseEditorState(false))
+                    resolve()
+                })
+            } catch (e) {
                 reject()
             }
         })
@@ -86,15 +91,12 @@ export function updateExpense(expense) {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(expense)
-                }).then(
-                    (json) => {
-                        dispatch(changeExpenseEditorState(false))
-                        dispatch(updateExpenseUI(expense))
-                        resolve()
-                    }
-                    )
-            }
-            catch (e) {
+                }).then((json) => {
+                    dispatch(changeExpenseEditorState(false))
+                    dispatch(updateExpenseUI(expense))
+                    resolve()
+                })
+            } catch (e) {
                 reject()
             }
         })
@@ -102,15 +104,15 @@ export function updateExpense(expense) {
 }
 
 export function changeExpenseEditorState(payload) {
-    return { type: TOGGLE_EXPENSE_EDITOR, payload: payload }
+    return {type: TOGGLE_EXPENSE_EDITOR, payload: payload}
 }
 
 export function addCreatedExpense(payload) {
-    return { type: ADD_CREATED_EXPENSE, payload: payload }
+    return {type: ADD_CREATED_EXPENSE, payload: payload}
 }
 
 export function updateExpenseUI(payload) {
-    return { type: UPDATE_EXPENSE_UI, payload: payload }
+    return {type: UPDATE_EXPENSE_UI, payload: payload}
 }
 
 export function removeSelectedExpenses(payload) {
@@ -130,19 +132,15 @@ export function removeSelectedExpenses(payload) {
                     dispatch(removeExpensesUI(payload))
                 }
             })
-        }
-        catch (e) {
-
-        }
+        } catch (e) {}
 
     }
 }
 
 export function removeExpensesUI(payload) {
-    return { type: REMOVE_SELECTED_EXPENSES, payload: payload }
+    return {type: REMOVE_SELECTED_EXPENSES, payload: payload}
 }
 
-export function ChangeLoadingState(payload){
-    return {type: CHANGE_LOADING_STATE, payload: payload }
+export function ChangeLoadingState(payload) {
+    return {type: CHANGE_LOADING_STATE, payload: payload}
 }
-

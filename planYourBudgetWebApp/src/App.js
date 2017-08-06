@@ -8,7 +8,6 @@ import {connect} from 'react-redux'
 import * as actionCreators from './actions/actionCreators'
 import {bindActionCreators} from 'redux'
 import BudgetApp from './components/budgetApp'
-import CircularProgress from 'material-ui/CircularProgress';
 
 class App extends Component {
   constructor(props, context) {

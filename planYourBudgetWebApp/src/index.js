@@ -13,7 +13,7 @@ import thunkMiddleware from 'redux-thunk'
 
 const initialState = {
     renderer: {
-       isLoading: true 
+       isLoading: false 
     },
     expenses: {
         expenses: [],
