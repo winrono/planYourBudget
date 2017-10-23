@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAOZ8QZU1Sf06Qqn2YRktKZAAAAAACAAAAAAADZgAAwAAAABAAAADG3Oi2dQRSPFt3tPfhxq5YAAAAAASAAACgAAAAEAAAAOrZ4xwnN/euY5pkn3B1HzwYAAAAgppACtWqQG7PzaerGVRNwmsM+Zsv52ciFAAAAKdmMGj+h55sRbgBs+lFXeQS7AiV</EncryptedPassword>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>Data Source=tcp:planyourbudget.database.windows.net,1433;Initial Catalog=PlanYourBudgetDB;User Id=raman_nasovich@planyourbudget.database.windows.net;Password=sharpCode1@;</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>
